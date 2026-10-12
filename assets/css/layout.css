@@ -1,0 +1,517 @@
+/* ==========================================================================
+   LAYOUT.CSS - CẤU TRÚC SPLIT-VIEW, HEADER, SIDEBAR VÀ VIEWPORT
+   ========================================================================== */
+
+#app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
+  background-color: var(--bg-primary);
+}
+
+/* ==========================================================================
+   1. TOP NAVIGATION HEADER
+   ========================================================================== */
+
+.top-header {
+  height: 56px;
+  min-height: 56px;
+  background-color: var(--bg-secondary);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 16px;
+  z-index: 100;
+  box-shadow: var(--shadow-sm);
+}
+
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.btn-sidebar-toggle {
+  width: 36px;
+  height: 36px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  transition: all var(--transition-fast);
+}
+
+.btn-sidebar-toggle:hover {
+  color: var(--text-primary);
+  border-color: var(--accent-cyan);
+  background: var(--bg-card-hover);
+}
+
+.brand-link {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  color: var(--text-primary);
+  font-weight: 700;
+  font-size: 16px;
+  letter-spacing: -0.3px;
+}
+
+.brand-icon {
+  width: 28px;
+  height: 28px;
+}
+
+.brand-chip {
+  font-size: 10px;
+  padding: 2px 6px;
+  background: rgba(14, 165, 233, 0.2);
+  color: var(--accent-cyan);
+  border-radius: 4px;
+  font-weight: 700;
+  font-family: var(--font-mono);
+  border: 1px solid rgba(14, 165, 233, 0.4);
+}
+
+.header-center {
+  flex: 1;
+  max-width: 480px;
+  margin: 0 20px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.search-box-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.search-input {
+  width: 100%;
+  height: 36px;
+  padding: 0 12px 0 34px;
+  border-radius: var(--radius-sm);
+  background-color: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+  font-size: 13px;
+  transition: border-color var(--transition-fast);
+}
+
+.search-input:focus {
+  border-color: var(--accent-cyan);
+  outline: none;
+  box-shadow: 0 0 0 2px var(--accent-cyan-glow);
+}
+
+.search-icon {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  pointer-events: none;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* Progress indicator */
+.progress-widget {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 12px;
+  background: var(--bg-card);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-color);
+}
+
+.progress-text {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+
+.progress-bar-container {
+  width: 70px;
+  height: 6px;
+  background: var(--bg-primary);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.progress-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent-cyan), var(--accent-green));
+  width: 0%;
+  transition: width 0.3s ease;
+}
+
+/* Header Action Buttons */
+.header-btn {
+  height: 36px;
+  padding: 0 10px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-card);
+  border: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  transition: all var(--transition-fast);
+}
+
+.header-btn:hover {
+  background: var(--bg-card-hover);
+  color: var(--text-primary);
+  border-color: var(--accent-cyan);
+}
+
+.header-btn.active {
+  color: var(--accent-cyan);
+  border-color: var(--accent-cyan);
+  background: var(--accent-cyan-glow);
+}
+
+/* ==========================================================================
+   2. MAIN CONTAINER & SIDEBAR
+   ========================================================================== */
+
+.main-container {
+  display: flex;
+  flex: 1;
+  height: calc(100vh - 56px);
+  overflow: hidden;
+  position: relative;
+}
+
+/* Sidebar Lộ trình học */
+.sidebar {
+  width: 320px;
+  min-width: 320px;
+  background-color: var(--bg-secondary);
+  border-right: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  transition: width var(--transition-normal), transform var(--transition-normal);
+  z-index: 50;
+}
+
+.sidebar.collapsed {
+  width: 0;
+  min-width: 0;
+  transform: translateX(-100%);
+  overflow: hidden;
+  border-right: none;
+}
+
+.sidebar-header {
+  padding: 14px 16px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sidebar-title {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--text-muted);
+}
+
+.sidebar-count {
+  font-size: 11px;
+  padding: 2px 6px;
+  border-radius: 10px;
+  background: var(--bg-card);
+  color: var(--text-secondary);
+}
+
+.sidebar-filter-wrapper {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.sidebar-filter-input {
+  width: 100%;
+  height: 32px;
+  padding: 0 10px;
+  font-size: 12px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  color: var(--text-primary);
+}
+
+.sidebar-filter-input:focus {
+  border-color: var(--accent-cyan);
+  outline: none;
+}
+
+.sidebar-nav {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px 8px;
+}
+
+/* Chapter accordions in sidebar */
+.chapter-group {
+  margin-bottom: 8px;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.01);
+}
+
+.chapter-btn {
+  width: 100%;
+  padding: 9px 12px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: left;
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 13px;
+  transition: background var(--transition-fast);
+}
+
+.chapter-btn:hover {
+  background: var(--bg-card);
+}
+
+.chapter-btn-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+}
+
+.chapter-badge {
+  font-size: 10px;
+  padding: 1px 5px;
+  border-radius: 3px;
+  background: var(--bg-card);
+  color: var(--text-muted);
+}
+
+.chapter-chevron {
+  transition: transform var(--transition-fast);
+  color: var(--text-muted);
+}
+
+.chapter-group.open .chapter-chevron {
+  transform: rotate(90deg);
+}
+
+.lessons-list {
+  display: none;
+  list-style: none;
+  padding: 4px 0 6px 14px;
+}
+
+.chapter-group.open .lessons-list {
+  display: block;
+}
+
+.lesson-item {
+  margin-bottom: 2px;
+}
+
+.lesson-link {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 10px;
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-size: 13px;
+  line-height: 1.4;
+  text-decoration: none;
+  transition: all var(--transition-fast);
+  border-left: 2px solid transparent;
+}
+
+.lesson-link:hover {
+  background: var(--bg-card);
+  color: var(--text-primary);
+  text-decoration: none;
+}
+
+.lesson-link.active {
+  background: var(--bg-card-hover);
+  color: var(--accent-cyan);
+  font-weight: 600;
+  border-left-color: var(--accent-cyan);
+}
+
+.lesson-link-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.lesson-status-icon {
+  width: 14px;
+  height: 14px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  border: 1.5px solid var(--text-muted);
+}
+
+.lesson-link.completed .lesson-status-icon {
+  background: var(--accent-green);
+  border-color: var(--accent-green);
+  position: relative;
+}
+
+.lesson-link.completed .lesson-status-icon::after {
+  content: "✓";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  color: #ffffff;
+  font-size: 9px;
+  font-weight: 900;
+}
+
+/* ==========================================================================
+   3. WORKSPACE: SPLIT-VIEW (NỬA TRÁI BÀI HỌC, NỬA PHẢI BOARD ẢO)
+   ========================================================================== */
+
+.workspace-split {
+  flex: 1;
+  display: flex;
+  height: 100%;
+  overflow: hidden;
+  position: relative;
+}
+
+/* Left Pane: Lesson Reader */
+.lesson-pane {
+  flex: 1;
+  height: 100%;
+  overflow-y: auto;
+  padding: 24px 32px 80px 32px;
+  background-color: var(--bg-primary);
+}
+
+/* Vertical Split Resizer */
+.split-divider {
+  width: 6px;
+  height: 100%;
+  background: var(--border-color);
+  cursor: col-resize;
+  transition: background var(--transition-fast);
+  position: relative;
+  z-index: 10;
+}
+
+.split-divider:hover, .split-divider.dragging {
+  background: var(--accent-cyan);
+}
+
+/* Right Pane: Simulator & Tools Pane */
+.simulator-pane {
+  width: 48%;
+  min-width: 380px;
+  max-width: 65%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--bg-secondary);
+  border-left: 1px solid var(--border-color);
+  box-shadow: -4px 0 12px rgba(0, 0, 0, 0.2);
+}
+
+.simulator-pane-header {
+  height: 48px;
+  min-height: 48px;
+  padding: 0 16px;
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.sim-tabs-nav {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.sim-tab-btn {
+  padding: 6px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  background: transparent;
+  transition: all var(--transition-fast);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sim-tab-btn:hover {
+  color: var(--text-primary);
+  background: var(--bg-card-hover);
+}
+
+.sim-tab-btn.active {
+  color: var(--accent-cyan);
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+}
+
+.sim-pane-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.sim-control-btn {
+  width: 30px;
+  height: 30px;
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-secondary);
+  background: var(--bg-primary);
+  border: 1px solid var(--border-color);
+  transition: all var(--transition-fast);
+}
+
+.sim-control-btn:hover {
+  color: var(--text-primary);
+  border-color: var(--accent-cyan);
+}
+
+.simulator-pane-body {
+  flex: 1;
+  overflow-y: auto;
+  padding: 16px;
+  background: #060911;
+}

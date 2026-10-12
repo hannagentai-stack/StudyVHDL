@@ -1,0 +1,621 @@
+/* ==========================================================================
+   SIMULATORS.CSS - GIAO DIỆN BOARD TERASIC DE2-115 ẢO VÀ CÁC BỘ MÔ PHỎNG
+   ========================================================================== */
+
+/* Khung Board DE2-115 Ảo */
+.de2-board-chassis {
+  background: radial-gradient(circle at 50% 30%, #172033 0%, #0c1220 100%);
+  border: 2px solid #2a3754;
+  border-radius: 12px;
+  padding: 18px 16px;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8), 0 8px 24px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  color: #e2e8f0;
+  user-select: none;
+}
+
+/* Silkscreen Header */
+.board-silkscreen-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1.5px solid rgba(255, 255, 255, 0.15);
+  padding-bottom: 8px;
+}
+
+.board-model {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 800;
+  color: #f8fafc;
+  letter-spacing: 1px;
+}
+
+.board-fpga-chip-tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.1);
+  padding: 2px 8px;
+  border-radius: 4px;
+  border: 1px solid rgba(56, 189, 248, 0.3);
+}
+
+/* --- 1. DÃY LED 7 ĐOẠN HEX7..HEX0 --- */
+.hex-display-bank {
+  background: #05080f;
+  border: 1.5px solid #1e293b;
+  border-radius: 8px;
+  padding: 12px 10px;
+  display: flex;
+  justify-content: space-between;
+  gap: 6px;
+  overflow-x: auto;
+}
+
+.hex-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.hex-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  color: #64748b;
+}
+
+.hex-svg {
+  width: 34px;
+  height: 52px;
+  filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.9));
+}
+
+/* Các thanh LED 7 đoạn: a, b, c, d, e, f, g */
+.hex-segment {
+  fill: #220a0d; /* Trạng thái tắt */
+  transition: fill 0.05s ease, filter 0.05s ease;
+}
+
+.hex-segment.on {
+  fill: #ff2b44; /* Trạng thái sáng: Đỏ rực */
+  filter: drop-shadow(0 0 4px #ff2b44);
+}
+
+/* --- 2. DÃY ĐÈN LED ĐỎ LEDR17..LEDR0 --- */
+.led-bank-section {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.led-bank-label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: #94a3b8;
+  display: flex;
+  justify-content: space-between;
+}
+
+.led-grid-18 {
+  display: grid;
+  grid-template-columns: repeat(18, 1fr);
+  gap: 3px;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 8px 6px;
+  border-radius: 6px;
+  border: 1px solid #1e293b;
+}
+
+.led-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+}
+
+.led-bulb {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  background: #3b1115;
+  border: 1px solid #1a0809;
+  transition: all 0.08s ease;
+}
+
+.led-bulb.red.on {
+  background: #ff334b;
+  box-shadow: 0 0 8px 2px #ff2b44, 0 0 14px #ff2b44;
+  border-color: #ffe4e6;
+}
+
+.led-unit-label {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  color: #64748b;
+}
+
+/* --- 3. DÃY ĐÈN LED XANH LEDG8..LEDG0 --- */
+.led-grid-9 {
+  display: grid;
+  grid-template-columns: repeat(9, 1fr);
+  gap: 6px;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 8px 10px;
+  border-radius: 6px;
+  border: 1px solid #1e293b;
+}
+
+.led-bulb.green {
+  background: #092e1f;
+  border-color: #04170f;
+}
+
+.led-bulb.green.on {
+  background: #10b981;
+  box-shadow: 0 0 8px 2px #10b981, 0 0 14px #10b981;
+  border-color: #a7f3d0;
+}
+
+/* --- 4. CÔNG TẮC TRƯỢT SW17..SW0 --- */
+.switch-grid-18 {
+  display: grid;
+  grid-template-columns: repeat(18, 1fr);
+  gap: 3px;
+  background: #0a0f1d;
+  padding: 10px 6px;
+  border-radius: 6px;
+  border: 1px solid #1e293b;
+}
+
+.switch-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.toggle-switch-housing {
+  width: 14px;
+  height: 28px;
+  background: #111827;
+  border-radius: 3px;
+  border: 1px solid #374151;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 2px;
+  transition: all 0.1s ease;
+}
+
+.toggle-switch-lever {
+  width: 10px;
+  height: 12px;
+  background: linear-gradient(180deg, #9ca3af 0%, #4b5563 100%);
+  border-radius: 2px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+  transition: transform 0.12s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Khi công tắc ở vị trí UP (mức '1') */
+.switch-unit.active .toggle-switch-housing {
+  border-color: #ef4444;
+  box-shadow: 0 0 6px rgba(239, 68, 68, 0.4);
+}
+
+.switch-unit.active .toggle-switch-lever {
+  transform: translateY(-10px);
+  background: linear-gradient(180deg, #f87171 0%, #dc2626 100%);
+}
+
+.switch-unit-label {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  color: #94a3b8;
+  font-weight: 600;
+}
+
+/* Highlight công tắc và linh kiện đang được bài học sử dụng */
+.switch-unit.highlight-focus,
+.key-unit.highlight-focus,
+.hex-unit.highlight-focus {
+  outline: 2px dashed #38bdf8;
+  outline-offset: 3px;
+  border-radius: 4px;
+}
+
+/* --- 5. NÚT NHẤN KEY3..KEY0 (TÍCH CỰC MỨC THẤP) --- */
+.key-bank-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 14px;
+  padding: 8px 12px;
+  background: rgba(0, 0, 0, 0.35);
+  border-radius: 6px;
+  border: 1px solid #1e293b;
+}
+
+.key-unit {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+}
+
+.tactile-btn {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #0284c7 0%, #0369a1 100%);
+  border: 2px solid #38bdf8;
+  box-shadow: 0 3px 6px rgba(0, 0, 0, 0.6);
+  transition: all 0.05s ease;
+}
+
+.tactile-btn:active, .key-unit.pressed .tactile-btn {
+  transform: scale(0.92) translateY(2px);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
+  background: radial-gradient(circle at 50% 50%, #0369a1 0%, #075985 100%);
+}
+
+.key-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  font-weight: 700;
+  color: #94a3b8;
+}
+
+/* Status Monitor Bar bên dưới Board */
+.board-status-monitor {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 12px;
+  background: #070c17;
+  border-radius: 6px;
+  border: 1px solid #1e293b;
+  font-family: var(--font-mono);
+  font-size: 11px;
+}
+
+.status-chunk {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.status-label {
+  color: #64748b;
+}
+
+.status-val {
+  color: #38bdf8;
+  font-weight: 700;
+}
+
+/* ==========================================================================
+   6. BỘ VẼ GIẢN ĐỒ DẠNG SÓNG XUNG NHỊP (WAVEFORM TIMING VIEWER)
+   ========================================================================== */
+.waveform-viewer-wrapper {
+  background: radial-gradient(circle at 50% 30%, #0d1526 0%, #060a14 100%);
+  border: 2px solid #2a3754;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8), 0 8px 24px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  color: #e2e8f0;
+  user-select: none;
+}
+
+.waveform-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-bottom: 12px;
+  border-bottom: 1.5px solid rgba(255, 255, 255, 0.1);
+}
+
+.waveform-controls-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wv-btn {
+  background: #1e293b;
+  color: #f8fafc;
+  border: 1px solid #334155;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+}
+
+.wv-btn:hover {
+  background: #0284c7;
+  border-color: #38bdf8;
+  color: #ffffff;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+}
+
+.wv-btn:active {
+  transform: scale(0.96);
+}
+
+.waveform-controls-center {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  background: #05080f;
+  padding: 6px 14px;
+  border-radius: 6px;
+  border: 1px solid #1e293b;
+}
+
+.wv-stat-label {
+  color: #64748b;
+  font-weight: 500;
+}
+
+.wv-stat-val {
+  color: #38bdf8;
+  font-weight: 700;
+}
+
+.wv-stat-sep {
+  color: #334155;
+  margin: 0 2px;
+}
+
+.waveform-controls-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.wv-speed-label {
+  color: #94a3b8;
+  font-size: 11px;
+  font-family: var(--font-mono);
+  font-weight: 600;
+}
+
+#wv_speed_slider {
+  width: 100px;
+  accent-color: #38bdf8;
+  cursor: pointer;
+}
+
+.waveform-canvas-box {
+  background: #060911;
+  border: 1.5px solid #1e293b;
+  border-radius: 8px;
+  overflow-x: auto;
+  overflow-y: hidden;
+  box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.9);
+}
+
+#waveform_canvas {
+  display: block;
+  cursor: crosshair;
+  width: 100%;
+}
+
+.waveform-legend-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 16px;
+  padding: 8px 12px;
+  background: #070c17;
+  border-radius: 6px;
+  border: 1px solid #1e293b;
+  font-size: 11px;
+}
+
+.wv-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-mono);
+  color: #94a3b8;
+}
+
+.wv-legend-color {
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  display: inline-block;
+  box-shadow: 0 0 4px currentColor;
+}
+
+/* ==========================================================================
+   7. BỘ MÔ PHỎNG MÁY TRẠNG THÁI HỮU HẠN (FSM STATE GRAPH SIMULATOR)
+   ========================================================================== */
+.fsm-viewer-wrapper {
+  background: radial-gradient(circle at 50% 30%, #0d1526 0%, #060a14 100%);
+  border: 2px solid #2a3754;
+  border-radius: 12px;
+  padding: 16px;
+  box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.8), 0 8px 24px rgba(0, 0, 0, 0.6);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  color: #e2e8f0;
+  user-select: none;
+}
+
+.fsm-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  padding-bottom: 12px;
+  border-bottom: 1.5px solid rgba(255, 255, 255, 0.1);
+}
+
+.fsm-controls-left, .fsm-controls-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.fsm-btn {
+  background: #1e293b;
+  color: #f8fafc;
+  border: 1px solid #334155;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+}
+
+.fsm-btn:hover {
+  background: #0284c7;
+  border-color: #38bdf8;
+  color: #ffffff;
+  box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
+}
+
+.fsm-btn:active {
+  transform: scale(0.96);
+}
+
+.fsm-btn.running {
+  background: #059669;
+  border-color: #10b981;
+  color: #ffffff;
+  box-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
+}
+
+.fsm-input-toggle-btn {
+  background: #070d1a;
+  border: 1.5px solid #1e293b;
+  color: #94a3b8;
+  padding: 6px 12px;
+  border-radius: 6px;
+  font-family: var(--font-mono);
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  transition: all 0.15s ease;
+}
+
+.fsm-input-toggle-btn:hover {
+  border-color: #38bdf8;
+  color: #f8fafc;
+}
+
+.fsm-in-val {
+  font-weight: 800;
+  padding: 1px 6px;
+  border-radius: 3px;
+}
+
+.fsm-in-val.high {
+  background: rgba(16, 185, 129, 0.2);
+  color: #10b981;
+  border: 1px solid #10b981;
+}
+
+.fsm-in-val.low {
+  background: rgba(100, 116, 139, 0.2);
+  color: #94a3b8;
+  border: 1px solid #475569;
+}
+
+.fsm-canvas-box {
+  background: #060a14;
+  border: 1.5px solid #1e293b;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: inset 0 0 12px rgba(0, 0, 0, 0.9);
+}
+
+#fsm_canvas {
+  display: block;
+  width: 100%;
+}
+
+.fsm-status-dock {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 8px;
+}
+
+.fsm-status-card {
+  background: #070c17;
+  border: 1px solid #1e293b;
+  border-radius: 6px;
+  padding: 8px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.fsm-status-card.log-card {
+  grid-column: span 2;
+}
+
+.fsm-dock-label {
+  font-size: 10px;
+  font-family: var(--font-mono);
+  color: #64748b;
+  text-transform: uppercase;
+}
+
+.fsm-dock-val {
+  font-family: var(--font-mono);
+  font-size: 13px;
+  font-weight: 700;
+  color: #cbd5e1;
+}
+
+.fsm-dock-val.highlight {
+  color: #38bdf8;
+  text-shadow: 0 0 8px rgba(56, 189, 248, 0.4);
+}
+
+.fsm-dock-val.output {
+  color: #f59e0b;
+}
+
+.fsm-log-text {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  color: #94a3b8;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

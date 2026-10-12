@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StudyVHDL - Học Thiết Kế Vi Mạch FPGA DE2-115 Tương Tác</title>
+  <meta name="description" content="Chương trình học thiết kế vi mạch FPGA & VHDL tương tác từ con số 0 cho kit Terasic DE2-115 Cyclone IV, Quartus Prime 20.1 và ModelSim.">
+  
+  <!-- Favicon & PWA Manifest -->
+  <link rel="icon" type="image/svg+xml" href="./assets/icons/favicon.svg">
+  <link rel="manifest" href="./manifest.json">
+  <meta name="theme-color" content="#0284c7">
+
+  <!-- Stylesheets -->
+  <link rel="stylesheet" href="./assets/css/main.css">
+  <link rel="stylesheet" href="./assets/css/layout.css">
+  <link rel="stylesheet" href="./assets/css/components.css">
+  <link rel="stylesheet" href="./assets/css/simulators.css">
+  <link rel="stylesheet" href="./assets/css/responsive.css">
+</head>
+<body>
+  <div id="app">
+    <!-- ====================================================================
+         1. THANH TIÊU ĐỀ ĐIỀU HƯỚNG TRÊN CÙNG (TOP HEADER)
+         ==================================================================== -->
+    <header class="top-header">
+      <div class="header-left">
+        <button class="btn-sidebar-toggle" id="btn_toggle_sidebar" onclick="VHDL_App.toggleSidebar()" title="Đóng/Mở Mục Lục">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="3" y1="12" x2="21" y2="12"></line>
+            <line x1="3" y1="6" x2="21" y2="6"></line>
+            <line x1="3" y1="18" x2="21" y2="18"></line>
+          </svg>
+        </button>
+        <a href="#ch0-b1" class="brand-link">
+          <svg class="brand-icon" viewBox="0 0 64 64">
+            <rect width="64" height="64" rx="14" fill="#161b22" stroke="#38bdf8" stroke-width="3"/>
+            <text x="32" y="38" font-family="monospace" font-size="16" font-weight="900" fill="#38bdf8" text-anchor="middle">VHDL</text>
+            <circle cx="20" cy="46" r="3" fill="#10b981"/>
+            <circle cx="32" cy="46" r="3" fill="#f59e0b"/>
+            <circle cx="44" cy="46" r="3" fill="#ef4444"/>
+          </svg>
+          <span class="brand-text-full">STUDY VHDL</span>
+          <span class="brand-chip">DE2-115</span>
+        </a>
+      </div>
+
+      <div class="header-center">
+        <div class="search-box-wrapper">
+          <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="11" cy="11" r="8"></circle>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+          </svg>
+          <input type="text" id="search_lessons_input" class="search-input" placeholder="Tìm kiếm bài học, cú pháp, cổng logic, lỗi...">
+        </div>
+      </div>
+
+      <div class="header-right">
+        <!-- Tiến độ học tập -->
+        <div class="progress-widget" title="Tiến độ hoàn thành toàn khóa học">
+          <span class="progress-text" id="progress_text_pct">0% (0/54)</span>
+          <div class="progress-bar-container">
+            <div class="progress-bar-fill" id="progress_bar_fill"></div>
+          </div>
+        </div>
+
+        <!-- Các tiện ích kỹ sư -->
+        <button class="header-btn" onclick="window.VHDL_Tools && window.VHDL_Tools.openModal('cheatsheet')" title="Bảng tra cứu VHDL & Chân DE2-115">
+          📖 <span>Tra cứu</span>
+        </button>
+        <button class="header-btn" onclick="window.VHDL_Tools && window.VHDL_Tools.openModal('glossary')" title="Từ điển thuật ngữ Vi mạch & FPGA">
+          📚 <span>Từ điển</span>
+        </button>
+        <button class="header-btn" onclick="window.VHDL_Tools && window.VHDL_Tools.openModal('flashcards')" title="Thẻ ghi nhớ thông minh 3D">
+          🎴 <span>Flashcards</span>
+        </button>
+        <button class="header-btn" onclick="window.VHDL_Tools && window.VHDL_Tools.openModal('debuglab')" title="Phòng thực hành gỡ lỗi vi mạch">
+          🔬 <span>Sửa lỗi</span>
+        </button>
+
+        <!-- Nút Bật/Tắt Âm Thanh Board -->
+        <button class="header-btn" id="btn_toggle_audio" onclick="VHDL_App.toggleAudio()" title="Bật/Tắt âm thanh công tắc cơ học & buzzer">
+          🔊
+        </button>
+
+        <!-- Nút Xuất/Nhập Tiến độ JSON -->
+        <button class="header-btn" id="btn_export_import" onclick="VHDL_App.openProgressModal()" title="Sao lưu / Khôi phục tiến độ học">
+          💾 <span>Tiến độ</span>
+        </button>
+
+        <!-- Nút Đổi Giao Diện Sáng / Tối -->
+        <button class="header-btn" id="btn_toggle_theme" onclick="VHDL_App.toggleTheme()" title="Chuyển chế độ Giao diện Tối / Sáng">
+          🌙
+        </button>
+      </div>
+    </header>
+
+    <!-- ====================================================================
+         2. KHUNG NỘI DUNG CHÍNH (SIDEBAR + SPLIT-VIEW WORKSPACE)
+         ==================================================================== -->
+    <div class="main-container">
+      <!-- SIDEBAR LỘ TRÌNH HỌC -->
+      <aside class="sidebar" id="app_sidebar">
+        <div class="sidebar-header">
+          <span class="sidebar-title">LỘ TRÌNH 10 CHƯƠNG</span>
+          <span class="sidebar-count">10 Chương</span>
+        </div>
+        <nav class="sidebar-nav" id="sidebar_nav">
+          <!-- Danh mục chương và bài học được nạp tự động bởi app.js -->
+        </nav>
+      </aside>
+
+      <!-- KHÔNG GIAN LÀM VIỆC CHIA ĐÔI MÀN HÌNH (SPLIT-VIEW) -->
+      <main class="workspace-split">
+        <!-- NỬA TRÁI: KHUNG ĐỌC BÀI HỌC (Cuộn dọc độc lập) -->
+        <div class="lesson-pane" id="lesson_content_pane">
+          <!-- Nội dung 10 mục của bài học được nạp tự động bởi app.js -->
+        </div>
+
+        <!-- THANH KÉO CO GIÃN TỶ LỆ MÀN HÌNH -->
+        <div class="split-divider" id="split_divider" title="Kéo để điều chỉnh độ rộng Board ảo"></div>
+
+        <!-- NỬA PHẢI: BOARD TERASIC DE2-115 ẢO & CÁC CÔNG CỤ MÔ PHỎNG -->
+        <section class="simulator-pane" id="simulator_pane">
+          <div class="simulator-pane-header">
+            <div class="sim-tabs-nav">
+              <button class="sim-tab-btn active" id="tab_btn_board" onclick="VHDL_App.switchSimTab('board')">
+                <span>🟢 Board DE2-115 Ảo</span>
+              </button>
+              <button class="sim-tab-btn" id="tab_btn_waveform" onclick="VHDL_App.switchSimTab('waveform')">
+                <span>📈 Giản đồ Xung (Waveform)</span>
+              </button>
+              <button class="sim-tab-btn" id="tab_btn_fsm" onclick="VHDL_App.switchSimTab('fsm')">
+                <span>🔄 Máy Trạng Thái (FSM)</span>
+              </button>
+            </div>
+            <div class="sim-pane-controls">
+              <button class="sim-control-btn" id="sim_btn_refresh" onclick="VHDL_App.refreshActiveSim()" title="Làm mới trạng thái">
+                🔄
+              </button>
+            </div>
+          </div>
+          <div class="simulator-pane-body" id="de2_board_container">
+            <!-- Bo mạch DE2-115 được render tự động bởi de2_board.js -->
+          </div>
+          <div class="simulator-pane-body" id="waveform_container" style="display: none;">
+            <!-- Giản đồ xung Waveform được render tự động bởi waveform.js -->
+          </div>
+          <div class="simulator-pane-body" id="fsm_container" style="display: none;">
+            <!-- Đồ hình trạng thái FSM được render tự động bởi fsm.js -->
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <!-- ====================================================================
+         3. MODAL SAO LƯU & KHÔI PHỤC TIẾN ĐỘ (JSON BACKUP / RESTORE)
+         ==================================================================== -->
+    <div id="progress_modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:999; align-items:center; justify-content:center;">
+      <div style="background:var(--bg-secondary); border:1px solid var(--border-color); border-radius:12px; width:440px; max-width:90%; padding:24px; box-shadow:var(--shadow-lg);">
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:16px;">
+          <h3 style="font-size:17px; font-weight:700; color:var(--text-primary);">💾 Quản lý Tiến độ Học tập</h3>
+          <button onclick="VHDL_App.closeProgressModal()" style="font-size:18px; color:var(--text-muted);">&times;</button>
+        </div>
+        <p style="font-size:13.5px; color:var(--text-secondary); line-height:1.5; margin-bottom:20px;">
+          Tiến độ học tập và kết quả trắc nghiệm của bạn được lưu an toàn trên trình duyệt này. Bạn có thể xuất ra file JSON để đồng bộ sang máy tính khác hoặc lưu làm bản sao lưu an toàn.
+        </p>
+
+        <div style="display:flex; flex-direction:column; gap:12px;">
+          <button onclick="VHDL_Store.exportProgress()" style="padding:10px 16px; border-radius:6px; background:var(--accent-cyan); color:#fff; font-weight:600; font-size:13.5px; display:flex; align-items:center; justify-content:center; gap:8px;">
+            ⬇️ Tải xuống file tiến độ (.json)
+          </button>
+          
+          <label style="padding:10px 16px; border-radius:6px; background:var(--bg-card); border:1px solid var(--border-color); color:var(--text-primary); font-weight:600; font-size:13.5px; display:flex; align-items:center; justify-content:center; gap:8px; cursor:pointer;">
+            ⬆️ Khôi phục tiến độ từ file JSON
+            <input type="file" accept=".json" style="display:none;" onchange="VHDL_App.handleImportFile(event)">
+          </label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====================================================================
+       4. SCRIPTS (ĐƯỢC NẠP THEO THỨ TỰ LOGIC KHÔNG BỊ LỖI PHỤ THUỘC)
+       ==================================================================== -->
+  <!-- Lõi tiện ích -->
+  <script src="./assets/js/audio.js"></script>
+  <script src="./assets/js/store.js"></script>
+  <script src="./assets/js/highlighter.js"></script>
+  <script src="./assets/js/router.js"></script>
+
+  <!-- Bộ mô phỏng -->
+  <script src="./assets/js/simulators/de2_board.js"></script>
+  <script src="./assets/js/simulators/waveform.js"></script>
+  <script src="./assets/js/simulators/fsm.js"></script>
+
+  <!-- Dữ liệu bài học (Data scripts nạp vào window.VHDL_LESSONS_DB) -->
+  <script src="./assets/js/data/chapters_index.js"></script>
+  <script src="./assets/js/data/ch0_foundation.js"></script>
+  <script src="./assets/js/data/ch1_setup_first.js"></script>
+  <script src="./assets/js/data/ch2_vhdl_basics.js"></script>
+  <script src="./assets/js/data/ch3_combinational.js"></script>
+  <script src="./assets/js/data/ch4_sequential.js"></script>
+  <script src="./assets/js/data/ch5_fsm.js"></script>
+  <script src="./assets/js/data/ch6_modelsim.js"></script>
+  <script src="./assets/js/data/ch7_hardware.js"></script>
+  <script src="./assets/js/data/ch8_projects.js"></script>
+  <script src="./assets/js/data/ch9_advanced.js"></script>
+
+  <!-- Tiện ích tra cứu, từ điển, flashcards, debug lab -->
+  <script src="./assets/js/tools.js"></script>
+
+  <!-- Ứng dụng điều phối chính -->
+  <script src="./assets/js/app.js"></script>
+</body>
+</html>
